@@ -37,7 +37,7 @@ namespace ProSoLoPortal.Controllers
 
         // GET: Adminstration
         [HttpGet]
-        public async Task<IActionResult> Index(string role, string searchString)
+        public async Task<IActionResult> Index(string Role, string SearchString)
         {
             // Use LINQ to get list of roles.
             IQueryable<string> RoleQuery = from r in _context.Users
@@ -47,14 +47,16 @@ namespace ProSoLoPortal.Controllers
             var users = from u in _context.Users
                         select u;
 
-            if (!string.IsNullOrEmpty(searchString))
+
+
+            if (!string.IsNullOrEmpty(SearchString))
             {
-                users = users.Where(s => s.FirstName.Contains(searchString));
+                users = users.Where(s => s.FirstName.Contains(SearchString));
             }
 
-            if (!string.IsNullOrEmpty(role))
+            if (!string.IsNullOrEmpty(Role))
             {
-                users = users.Where(x => x.RoleName == role);
+                users = users.Where(x => x.RoleName == Role);
             }
 
             var userVM = new UserViewModel
