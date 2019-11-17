@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSoLoPortal\\ProSoLoPortal.csproj": {}
+    "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSoLoPortal\\ProSoLoPortal.csproj": {
+    "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSoLoPortal\\ProSoLoPortal.csproj",
+        "projectUniqueName": "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj",
         "projectName": "ProSoLoPortal",
-        "projectPath": "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSoLoPortal\\ProSoLoPortal.csproj",
+        "projectPath": "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj",
         "packagesPath": "C:\\Users\\krute\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSoLoPortal\\obj\\",
+        "outputPath": "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSolo-group3\\ProSoLoPortal\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
@@ -60,6 +60,14 @@
               "version": "[3.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Debug": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.0.0, )"
             }

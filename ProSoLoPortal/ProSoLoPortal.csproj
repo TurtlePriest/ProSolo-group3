@@ -5,6 +5,17 @@
     <UserSecretsId>aspnet-ProSoLoPortal-0E2464E6-6232-4DDF-BF85-80B2F1BBC55F</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\00000000000000_CreateIdentitySchema.cs" />
+    <Compile Remove="Migrations\00000000000000_CreateIdentitySchema.Designer.cs" />
+    <Compile Remove="Migrations\20191115090737_AddedApplicationUserFirstNameLastName.cs" />
+    <Compile Remove="Migrations\20191115090737_AddedApplicationUserFirstNameLastName.Designer.cs" />
+    <Compile Remove="Migrations\20191115091345_AddedApplicationUserToApplicationDbContextClass.cs" />
+    <Compile Remove="Migrations\20191115091345_AddedApplicationUserToApplicationDbContextClass.Designer.cs" />
+    <Compile Remove="Migrations\20191116155457_AddRoleStringToApplicationUser.cs" />
+    <Compile Remove="Migrations\20191116155457_AddRoleStringToApplicationUser.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
@@ -12,6 +23,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
