@@ -15,13 +15,13 @@ using ProSoLoPortal.ViewModels.AdministrationViewModels;
 namespace ProSoLoPortal.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class AdminstrationController : Controller
+    public class AdministrationController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
 
         private readonly ApplicationDbContext _context;
 
-        public AdminstrationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AdministrationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
 
