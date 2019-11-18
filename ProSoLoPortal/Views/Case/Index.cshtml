@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ProSoLoPortal.Models.Case>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CaseInformation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.kussemåtte)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CaseInformation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.kussemåtte)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CaseId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CaseId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CaseId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

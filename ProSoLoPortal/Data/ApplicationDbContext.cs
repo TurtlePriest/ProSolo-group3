@@ -10,5 +10,6 @@ namespace ProSoLoPortal.Data
             : base(options)
         {
         }
+        public DbSet<ProSoLoPortal.Models.Case> Case { get; set; }
     }
 }
