@@ -42,14 +42,11 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-
                 <label asp-for="Roles" class="control-label">Role</label>
                 <select asp-for="Roles" class="custom-select mr-sm-2" asp-items="Html.GetEnumSelectList<ProSoLoPortal.Helpers.RolesNames>()">
                     <option value="">Please Select</option>
                 </select>
                 <span asp-validation-for="Roles" class="text-danger"></span>
-
-
             </div>
 
             <div class="form-group">

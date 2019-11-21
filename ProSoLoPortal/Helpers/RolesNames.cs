@@ -7,11 +7,11 @@ namespace ProSoLoPortal.Helpers
 {
     public enum RolesNames
     {
-        ROLE_ADMIN,
-        ROLE_EMPLOYEE,
-        ROLE_MANUFACTURER,
-        ROLE_CUSTOMER,
-        ROLE_TEST,
-        ROLE_TEST2
+        Admin,
+        Employee,
+        Manufacturer,
+        Customer,
+        TEST,
+        TEST2
     }
 }

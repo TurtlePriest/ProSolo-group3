@@ -5,7 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Administration index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,7 +13,7 @@
 <form asp-controller="Administration" asp-action="Index" method="get">
     <p>
 
-        Role: <select asp-for="Role" asp-items="Model.RoleNameList">
+        Role: <select asp-for="Role" asp-items="Html.GetEnumSelectList<ProSoLoPortal.Helpers.RolesNames>()">
             <option value="">All</option>
         </select>
 

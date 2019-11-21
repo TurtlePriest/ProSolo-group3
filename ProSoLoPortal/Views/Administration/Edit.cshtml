@@ -33,8 +33,10 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RoleName" class="control-label"></label>
-                <input asp-for="RoleName" class="form-control" />
+                <label asp-for="RoleName" class="control-label">Role</label>
+                <select asp-for="RoleName" class="custom-select mr-sm-2" asp-items="Html.GetEnumSelectList<ProSoLoPortal.Helpers.RolesNames>()">
+                    <option value="">Please Select</option>
+                </select>
                 <span asp-validation-for="RoleName" class="text-danger"></span>
             </div>
             <div class="form-group">
