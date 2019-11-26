@@ -8389,8 +8389,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Andreas Frederiksen\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Andreas Frederiksen\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -8401,9 +8400,6 @@
       "packagesPath": "C:\\Users\\Andreas Frederiksen\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Andreas Frederiksen\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
         "C:\\Users\\Andreas Frederiksen\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"

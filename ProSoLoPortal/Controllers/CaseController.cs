@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProSoLoPortal.Data;
 using ProSoLoPortal.Models;
+using ProSoLoPortal.ViewModels.CaseViewModels;
 
 namespace ProSoLoPortal.Controllers
 {
@@ -87,7 +88,7 @@ namespace ProSoLoPortal.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CaseId")] Case @case, )
+        public async Task<IActionResult> Bid(int id, [Bind("CaseId")] Case @case, BidViewModel model)
         {
             if (id != @case.CaseId)
             {
@@ -98,10 +99,14 @@ namespace ProSoLoPortal.Controllers
             {
                 try
                 {
+                    var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
                     Bids bid = new Bids
                     {
-                        BidPrice =
-                    };
+                        ProposedTimeFrame = model.ProposedTimeFrame,
+                        BidPrice = model.BidPrice,
+                        CaseRefId = @case.CaseId,
+                        UserRefId = CurrentUser.Id
+                };
                     _context.Update(@case);
                     await _context.SaveChangesAsync();
                 }
