@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProSoLoPortal.Data;
 
 namespace ProSoLoPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191123161447_casesareeasy")]
+    partial class casesareeasy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,33 +226,15 @@ namespace ProSoLoPortal.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("ProSoLoPortal.Models.Bidders", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("CaseId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Checked")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CaseId");
-
-                    b.ToTable("Bidders");
-                });
-
             modelBuilder.Entity("ProSoLoPortal.Models.Case", b =>
                 {
                     b.Property<int>("CaseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Bidders")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsFinished")
                         .HasColumnType("bit");
@@ -324,13 +308,6 @@ namespace ProSoLoPortal.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ProSoLoPortal.Models.Bidders", b =>
-                {
-                    b.HasOne("ProSoLoPortal.Models.Case", null)
-                        .WithMany("Bidders")
-                        .HasForeignKey("CaseId");
                 });
 #pragma warning restore 612, 618
         }

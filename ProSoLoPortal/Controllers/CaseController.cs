@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProSoLoPortal.Data;
 using ProSoLoPortal.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProSoLoPortal.Controllers
 {
@@ -54,7 +55,7 @@ namespace ProSoLoPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CaseId,CaseInformation,kussemåtte")] Case @case)
+        public async Task<IActionResult> Create([Bind("CaseId,Name,TimeFrame,NumberOfProducts,Seller,IsLocked,IsFinished")] Case @case)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +87,7 @@ namespace ProSoLoPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CaseId,CaseInformation,kussemåtte")] Case @case)
+        public async Task<IActionResult> Edit(int id, [Bind("CaseId,Name,TimeFrame,NumberOfProducts,Seller,IsLocked,IsFinished")] Case @case)
         {
             if (id != @case.CaseId)
             {
@@ -143,6 +144,56 @@ namespace ProSoLoPortal.Controllers
             _context.Case.Remove(@case);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Bid(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var @case = await _context.Case.FindAsync(id);
+            if (@case == null)
+            {
+                return NotFound();
+            }
+            return View(@case);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Bid(int id, [Bind("CaseId")] Case @case)
+        {
+            if (id != @case.CaseId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (User.IsInRole("Manufacturer"))
+                    {
+                        //User
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CaseExists(@case.CaseId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(@case);
         }
 
         private bool CaseExists(int id)
