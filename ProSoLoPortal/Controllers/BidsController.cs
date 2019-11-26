@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,11 @@ namespace ProSoLoPortal.Controllers
     public class BidsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> UserManager;
 
-        public BidsController(ApplicationDbContext context)
+        public BidsController(ApplicationDbContext context, UserManager<ApplicationUser> UserManager)
         {
+            this.UserManager = UserManager;
             _context = context;
         }
 
@@ -57,16 +60,19 @@ namespace ProSoLoPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BidId,CaseRefId,UserRefId,ProposedTimeFrame,BidPrice")] Bids bids)
+        public async Task<IActionResult> Create(int id, [Bind("BidId,ProposedTimeFrame,BidPrice")] Bids bids)
         {
             if (ModelState.IsValid)
             {
+                var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
+                bids.UserRefId = CurrentUser.Id;
+                bids.CaseRefId = id;
                 _context.Add(bids);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("index", "Case");
             }
             ViewData["CaseRefId"] = new SelectList(_context.Case, "CaseId", "CaseId", bids.CaseRefId);
-            return View(bids);
+            return RedirectToAction("index","Case");
         }
 
         // GET: Bids/Edit/5

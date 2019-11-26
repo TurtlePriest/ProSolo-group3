@@ -84,7 +84,7 @@ namespace ProSoLoPortal.Controllers
             {
                 return NotFound();
             }
-            return View(@case);
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -107,7 +107,7 @@ namespace ProSoLoPortal.Controllers
                         CaseRefId = @case.CaseId,
                         UserRefId = CurrentUser.Id
                 };
-                    _context.Update(@case);
+                    _context.Bids.Update(bid);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -123,7 +123,7 @@ namespace ProSoLoPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(@case);
+            return View(model);
         }
 
         // GET: Case/Edit/5
