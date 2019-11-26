@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProSoLoPortal.Data;
 
 namespace ProSoLoPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191126100122_updatedcasewithuser")]
+    partial class updatedcasewithuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -286,15 +288,10 @@ namespace ProSoLoPortal.Migrations
                     b.Property<bool>("TimeFrameFexible")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("UserRefId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CaseId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Case");
                 });
@@ -358,13 +355,6 @@ namespace ProSoLoPortal.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProSoLoPortal.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ProSoLoPortal.Models.Case", b =>
-                {
                     b.HasOne("ProSoLoPortal.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");

@@ -10,22 +10,23 @@ using ProSoLoPortal.Models;
 
 namespace ProSoLoPortal.Controllers
 {
-    public class CaseController : Controller
+    public class BidsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CaseController(ApplicationDbContext context)
+        public BidsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Case
+        // GET: Bids
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Case.ToListAsync());
+            var applicationDbContext = _context.Bids.Include(b => b.Case);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Case/Details/5
+        // GET: Bids/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,42 @@ namespace ProSoLoPortal.Controllers
                 return NotFound();
             }
 
-            var @case = await _context.Case
-                .FirstOrDefaultAsync(m => m.CaseId == id);
-            if (@case == null)
+            var bids = await _context.Bids
+                .Include(b => b.Case)
+                .FirstOrDefaultAsync(m => m.BidId == id);
+            if (bids == null)
             {
                 return NotFound();
             }
 
-            return View(@case);
+            return View(bids);
         }
 
-        // GET: Case/Create
+        // GET: Bids/Create
         public IActionResult Create()
         {
+            ViewData["CaseRefId"] = new SelectList(_context.Case, "CaseId", "CaseId");
             return View();
         }
 
-        // POST: Case/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // POST: Bids/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CaseId,Name,TimeFrame,NumberOfProducts,Seller,ProposedPrice,UserRefId,IsLocked,IsFinished,TimeFrameFexible")] Case @case)
+        public async Task<IActionResult> Create([Bind("BidId,CaseRefId,UserRefId,ProposedTimeFrame,BidPrice")] Bids bids)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@case);
+                _context.Add(bids);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(@case);
+            ViewData["CaseRefId"] = new SelectList(_context.Case, "CaseId", "CaseId", bids.CaseRefId);
+            return View(bids);
         }
 
-        // GET: Case/Edit/5
+        // GET: Bids/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +77,23 @@ namespace ProSoLoPortal.Controllers
                 return NotFound();
             }
 
-            var @case = await _context.Case.FindAsync(id);
-            if (@case == null)
+            var bids = await _context.Bids.FindAsync(id);
+            if (bids == null)
             {
                 return NotFound();
             }
-            return View(@case);
+            ViewData["CaseRefId"] = new SelectList(_context.Case, "CaseId", "CaseId", bids.CaseRefId);
+            return View(bids);
         }
 
-        // POST: Case/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // POST: Bids/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CaseId,Name,TimeFrame,NumberOfProducts,Seller,ProposedPrice,UserRefId,IsLocked,IsFinished,TimeFrameFexible")] Case @case)
+        public async Task<IActionResult> Edit(int id, [Bind("BidId,CaseRefId,UserRefId,ProposedTimeFrame,BidPrice")] Bids bids)
         {
-            if (id != @case.CaseId)
+            if (id != bids.BidId)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace ProSoLoPortal.Controllers
             {
                 try
                 {
-                    _context.Update(@case);
+                    _context.Update(bids);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CaseExists(@case.CaseId))
+                    if (!BidsExists(bids.BidId))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,11 @@ namespace ProSoLoPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(@case);
+            ViewData["CaseRefId"] = new SelectList(_context.Case, "CaseId", "CaseId", bids.CaseRefId);
+            return View(bids);
         }
 
-        // GET: Case/Delete/5
+        // GET: Bids/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +130,31 @@ namespace ProSoLoPortal.Controllers
                 return NotFound();
             }
 
-            var @case = await _context.Case
-                .FirstOrDefaultAsync(m => m.CaseId == id);
-            if (@case == null)
+            var bids = await _context.Bids
+                .Include(b => b.Case)
+                .FirstOrDefaultAsync(m => m.BidId == id);
+            if (bids == null)
             {
                 return NotFound();
             }
 
-            return View(@case);
+            return View(bids);
         }
 
-        // POST: Case/Delete/5
+        // POST: Bids/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @case = await _context.Case.FindAsync(id);
-            _context.Case.Remove(@case);
+            var bids = await _context.Bids.FindAsync(id);
+            _context.Bids.Remove(bids);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CaseExists(int id)
+        private bool BidsExists(int id)
         {
-            return _context.Case.Any(e => e.CaseId == id);
+            return _context.Bids.Any(e => e.BidId == id);
         }
     }
 }

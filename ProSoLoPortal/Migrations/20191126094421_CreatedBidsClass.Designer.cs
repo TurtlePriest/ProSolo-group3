@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProSoLoPortal.Data;
 
 namespace ProSoLoPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191126094421_CreatedBidsClass")]
+    partial class CreatedBidsClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,37 +226,6 @@ namespace ProSoLoPortal.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("ProSoLoPortal.Models.Bids", b =>
-                {
-                    b.Property<int>("BidId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BidPrice")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CaseRefId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProposedTimeFrame")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserRefId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BidId");
-
-                    b.HasIndex("CaseRefId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Bids");
-                });
-
             modelBuilder.Entity("ProSoLoPortal.Models.Case", b =>
                 {
                     b.Property<int>("CaseId")
@@ -286,15 +257,7 @@ namespace ProSoLoPortal.Migrations
                     b.Property<bool>("TimeFrameFexible")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserRefId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("CaseId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Case");
                 });
@@ -348,26 +311,6 @@ namespace ProSoLoPortal.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ProSoLoPortal.Models.Bids", b =>
-                {
-                    b.HasOne("ProSoLoPortal.Models.Case", "Case")
-                        .WithMany()
-                        .HasForeignKey("CaseRefId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProSoLoPortal.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ProSoLoPortal.Models.Case", b =>
-                {
-                    b.HasOne("ProSoLoPortal.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

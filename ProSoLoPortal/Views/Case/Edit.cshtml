@@ -33,6 +33,16 @@
                 <input asp-for="Seller" class="form-control"/>
                 <span asp-validation-for="Seller" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="ProposedPrice" class="control-label"></label>
+                <input asp-for="ProposedPrice" class="form-control"/>
+                <span asp-validation-for="ProposedPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserRefId" class="control-label"></label>
+                <input asp-for="UserRefId" class="form-control"/>
+                <span asp-validation-for="UserRefId" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsLocked" /> @Html.DisplayNameFor(model => model.IsLocked)
@@ -41,6 +51,11 @@
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsFinished" /> @Html.DisplayNameFor(model => model.IsFinished)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TimeFrameFexible" /> @Html.DisplayNameFor(model => model.TimeFrameFexible)
                 </label>
             </div>
             <div class="form-group">

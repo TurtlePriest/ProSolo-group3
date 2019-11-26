@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +24,15 @@ namespace ProSoLoPortal.Models
         [Display(Name = "Name of seller")]
         public string Seller { get; set; }
 
+        [Display(Name = "Proposed price of product")]
+        public int ProposedPrice { get; set; }
+
+        [ForeignKey("ApplicationUser")]
+        public string UserRefId { get; set; }
+        public ApplicationUser User { get; set; }
+
         public bool IsLocked { get; set; }
         public bool IsFinished { get; set; }
+        public bool TimeFrameFexible { get; set; }
     }
 }
