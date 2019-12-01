@@ -14,6 +14,8 @@
     <Compile Remove="Migrations\20191115091345_AddedApplicationUserToApplicationDbContextClass.Designer.cs" />
     <Compile Remove="Migrations\20191116155457_AddRoleStringToApplicationUser.cs" />
     <Compile Remove="Migrations\20191116155457_AddRoleStringToApplicationUser.Designer.cs" />
+    <Compile Remove="Migrations\20191201110710_updatedrequirements.cs" />
+    <Compile Remove="Migrations\20191201110710_updatedrequirements.Designer.cs" />
   </ItemGroup>
 
 
@@ -21,6 +23,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.3.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>

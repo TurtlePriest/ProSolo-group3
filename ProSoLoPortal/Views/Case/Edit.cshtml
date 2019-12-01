@@ -12,37 +12,31 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CaseId"/>
+            <input type="hidden" asp-for="CaseId" />
+            <input type="hidden" asp-for="CustomerId" />
+            <input type="hidden" asp-for="EmployeeId" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control"/>
+                <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TimeFrame" class="control-label"></label>
-                <input asp-for="TimeFrame" class="form-control"/>
+                <input asp-for="TimeFrame" class="form-control" />
                 <span asp-validation-for="TimeFrame" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfProducts" class="control-label"></label>
-                <input asp-for="NumberOfProducts" class="form-control"/>
+                <input asp-for="NumberOfProducts" class="form-control" />
                 <span asp-validation-for="NumberOfProducts" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Seller" class="control-label"></label>
-                <input asp-for="Seller" class="form-control"/>
-                <span asp-validation-for="Seller" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="ProposedPrice" class="control-label"></label>
-                <input asp-for="ProposedPrice" class="form-control"/>
+                <input asp-for="ProposedPrice" class="form-control" />
                 <span asp-validation-for="ProposedPrice" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="UserRefId" class="control-label"></label>
-                <input asp-for="UserRefId" class="form-control"/>
-                <span asp-validation-for="UserRefId" class="text-danger"></span>
-            </div>
+
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsLocked" /> @Html.DisplayNameFor(model => model.IsLocked)
@@ -59,7 +53,7 @@
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary"/>
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

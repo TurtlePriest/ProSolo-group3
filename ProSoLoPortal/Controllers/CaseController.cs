@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ using ProSoLoPortal.ViewModels.CaseViewModels;
 
 namespace ProSoLoPortal.Controllers
 {
+
     public class CaseController : Controller
     {
         private readonly UserManager<ApplicationUser> UserManager;
@@ -25,12 +27,37 @@ namespace ProSoLoPortal.Controllers
             _context = context;
         }
 
+
+        [Authorize(Roles = "Admin, Employee, Customer, Manufacturer")]
         // GET: Case
         public async Task<IActionResult> Index()
         {
+            var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
+            
+            if(CurrentUser.RoleName.Equals("Customer"))
+            {
+                var cases = from c in _context.Case
+                            select c;
+               cases = cases.Where(s => s.CustomerId.Equals(CurrentUser.Id));
+               return View(cases);
+            }
+            if (CurrentUser.RoleName.Equals("Employee"))
+            {
+                var cases = from c in _context.Case
+                            select c;
+                cases = cases.Where(s => s.EmployeeId.Equals(CurrentUser.Id));
+                return View(cases);
+            }
+            if(CurrentUser.RoleName.Equals("Manufacturer"))
+            {
+                var cases = from c in _context.Case
+                            select c;
+                cases = cases.Where(s => s.IsLocked.Equals(false) && s.IsFinished.Equals(false));
+                return View(cases);
+            }
             return View(await _context.Case.ToListAsync());
         }
-
+        [Authorize(Roles = "Admin, Employee, Customer, Manufacturer")]
         // GET: Case/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -49,6 +76,7 @@ namespace ProSoLoPortal.Controllers
             return View(@case);
         }
 
+        [Authorize(Roles = "Admin, Employee")]
         // GET: Case/Create
         public IActionResult Create()
         {
@@ -58,20 +86,24 @@ namespace ProSoLoPortal.Controllers
         // POST: Case/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin, Employee")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CaseId,Name,TimeFrame,NumberOfProducts,Seller,ProposedPrice,IsLocked,IsFinished,TimeFrameFexible")] Case @case)
+        public async Task<IActionResult> Create(string CustomerId, [Bind("CaseId,Name,TimeFrame,NumberOfProducts,Seller,ProposedPrice,IsLocked,IsFinished,TimeFrameFexible")] Case @case)
         {
             if (ModelState.IsValid)
             {
                 var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
-                @case.UserRefId = CurrentUser.Id;
+                @case.EmployeeId = CurrentUser.Id;
+                var customer = await UserManager.FindByNameAsync(CustomerId);
+                @case.CustomerId = customer.Id;
                 _context.Add(@case);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(@case);
         }
+        [Authorize(Roles = "Admin, Manufacturer")]
         public async Task<IActionResult> Bid(int? id)
         {
             if (id == null)
@@ -86,6 +118,7 @@ namespace ProSoLoPortal.Controllers
             }
             return View();
         }
+        [Authorize(Roles = "Admin, Manufacturer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Bid(int id, [Bind("CaseId")] Case @case, BidViewModel model)
@@ -106,7 +139,7 @@ namespace ProSoLoPortal.Controllers
                         BidPrice = model.BidPrice,
                         CaseRefId = @case.CaseId,
                         UserRefId = CurrentUser.Id
-                };
+                    };
                     _context.Bids.Update(bid);
                     await _context.SaveChangesAsync();
                 }
@@ -125,6 +158,8 @@ namespace ProSoLoPortal.Controllers
             }
             return View(model);
         }
+
+        [Authorize(Roles = "Admin, Employee")]
 
         // GET: Case/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -145,9 +180,11 @@ namespace ProSoLoPortal.Controllers
         // POST: Case/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin, Employee")]
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CaseId,Name,TimeFrame,NumberOfProducts,Seller,ProposedPrice,UserRefId,IsLocked,IsFinished,TimeFrameFexible")] Case @case)
+        public async Task<IActionResult> Edit(int id, [Bind("CaseId,CustomerId,EmployeeId,Name,TimeFrame,NumberOfProducts,Seller,ProposedPrice,UserRefId,IsLocked,IsFinished,TimeFrameFexible")] Case @case)
         {
             if (id != @case.CaseId)
             {
@@ -177,6 +214,8 @@ namespace ProSoLoPortal.Controllers
             return View(@case);
         }
 
+        [Authorize(Roles = "Admin, Employee")]
+
         // GET: Case/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -196,6 +235,7 @@ namespace ProSoLoPortal.Controllers
         }
 
         // POST: Case/Delete/5
+        [Authorize(Roles = "Admin, Employee")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

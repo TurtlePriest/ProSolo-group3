@@ -1,14 +1,28 @@
-﻿@model IEnumerable<ProSoLoPortal.Models.Case>
+﻿@using Microsoft.AspNetCore.Identity
+
+@model IEnumerable<ProSoLoPortal.Models.Case>
+
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
-
+@if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+{ 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+}
+@if (User.IsInRole("Manufacturer"))
+{
+<p>
+    <a asp-action="Index" asp-controller="bids">Show my bids</a>
+    
+</p>
+}
+
+    
 <table class="table">
     <thead>
         <tr>
@@ -22,20 +36,19 @@
                 @Html.DisplayNameFor(model => model.NumberOfProducts)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Seller)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.ProposedPrice)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserRefId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsLocked)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsFinished)
-            </th>
+
+            @if (User.IsInRole("Admin") || User.IsInRole("Employee") || User.IsInRole("Customer"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.IsLocked)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsFinished)
+                </th>
+            }
+
             <th>
                 @Html.DisplayNameFor(model => model.TimeFrameFexible)
             </th>
@@ -45,41 +58,54 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimeFrame)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumberOfProducts)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Seller)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProposedPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserRefId)
-                </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeFrame)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfProducts)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProposedPrice)
+            </td>
+
+            @if (User.IsInRole("Admin") || User.IsInRole("Employee") || User.IsInRole("Customer"))
+            {
                 <td>
                     @Html.DisplayFor(modelItem => item.IsLocked)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IsFinished)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimeFrameFexible)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CaseId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.CaseId">Details</a> |
+            }
+
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeFrameFexible)
+            </td>
+            <td>
+                @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.CaseId">Edit</a>
                     <a asp-action="Delete" asp-route-id="@item.CaseId">Delete</a>
+                }
+                <a asp-action="Details" asp-route-id="@item.CaseId">Details</a>
+
+
+
+                @if (User.IsInRole("Admin") || User.IsInRole("Manufacturer"))
+                {
                     <a asp-action="Create" asp-controller="bids" asp-route-id="@item.CaseId">Bid</a>
-                </td>
-            </tr>
+                }
+                @if (User.IsInRole("Admin") || User.IsInRole("Employee") || User.IsInRole("Customer"))
+                {
+                    <a asp-action="Index" asp-controller="bids" asp-route-id="@item.CaseId">Bids</a>
+                }
+
+            </td>
+        </tr>
         }
     </tbody>
 </table>

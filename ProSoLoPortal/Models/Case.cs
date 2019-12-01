@@ -12,27 +12,41 @@ namespace ProSoLoPortal.Models
         [Display(Name = "ID")]
         public int CaseId { get; set; }
 
-        [Display(Name = "Name of product")]
+        
+        [Required, Display(Name = "Name of product")]
         public string Name { get; set; }
 
-        [Display(Name = "Expected time frame")]
+        [Display(Name = "Description of the case")]
+        public string CaseDescription { get; set; }
+
+        [Required,Display(Name = "Expected time frame")]
         public string TimeFrame { get; set; }
 
-        [Display(Name = "Number of products")]
+        
+        [Required, Display(Name = "Number of products")]
         public int NumberOfProducts { get; set; }
 
         [Display(Name = "Name of seller")]
         public string Seller { get; set; }
 
-        [Display(Name = "Proposed price of product")]
+        
+        [Required, Display(Name = "Proposed price of product")]
         public int ProposedPrice { get; set; }
 
         [ForeignKey("ApplicationUser")]
-        public string UserRefId { get; set; }
-        public ApplicationUser User { get; set; }
+        public string EmployeeId { get; set; }
+        public ApplicationUser Employee { get; set; }
 
+        
+        [Display(Name = "Customer name"), ForeignKey("ApplicationUser")]
+        public string CustomerId { get; set; }
+        public ApplicationUser Customer { get; set; }
+        [Display(Name = "Locked")]
         public bool IsLocked { get; set; }
+        [Display(Name = "Finished")]
         public bool IsFinished { get; set; }
+
+        [Display(Name = "Time Frame Flexible")]
         public bool TimeFrameFexible { get; set; }
     }
 }

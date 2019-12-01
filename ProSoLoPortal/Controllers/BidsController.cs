@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,7 @@ using ProSoLoPortal.Models;
 
 namespace ProSoLoPortal.Controllers
 {
+    [Authorize(Roles = "Admin, Manufacturer, Customer, Employee")]
     public class BidsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,8 +25,24 @@ namespace ProSoLoPortal.Controllers
         }
 
         // GET: Bids
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
+            var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
+            if (CurrentUser.RoleName.Equals("Customer") || CurrentUser.RoleName.Equals("Employee"))
+            {
+                var bids = from b in _context.Bids
+                            select b;
+                bids = bids.Where(s => s.CaseRefId.Equals(id));
+                return View(bids);
+            }
+            if (CurrentUser.RoleName.Equals("Manufacturer"))
+            {
+                var bids = from b in _context.Bids
+                           select b;
+                bids = bids.Where(s => s.UserRefId.Equals(CurrentUser.Id) && !s.Case.IsLocked && !s.Case.IsFinished);
+                
+                return View(bids);
+            }
             var applicationDbContext = _context.Bids.Include(b => b.Case);
             return View(await applicationDbContext.ToListAsync());
         }

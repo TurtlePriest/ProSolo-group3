@@ -23,41 +23,27 @@
             @Html.DisplayFor(model => model.TimeFrame)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaseDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaseDescription)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NumberOfProducts)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NumberOfProducts)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Seller)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Seller)
-        </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ProposedPrice)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ProposedPrice)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserRefId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserRefId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsLocked)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsLocked)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsFinished)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsFinished)
-        </dd>
+
+
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TimeFrameFexible)
         </dt>
@@ -67,6 +53,11 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.CaseId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a> 
+    @if(User.IsInRole("Employee") || User.IsInRole("Admin"))
+    {
+        
+<a asp-action="Edit">Edit</a>
+    }
+    
 </div>

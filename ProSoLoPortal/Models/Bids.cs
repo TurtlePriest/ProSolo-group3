@@ -17,7 +17,9 @@ namespace ProSoLoPortal.Models
         [ForeignKey("ApplicationUser")]
         public string UserRefId { get; set; }
         public ApplicationUser User { get; set; }
+        [Display (Name = "Proposed time frame")]
         public string ProposedTimeFrame { get; set; }
+        [Display(Name = "Proposed price")]
         public int BidPrice { get; set; }
     }
 }

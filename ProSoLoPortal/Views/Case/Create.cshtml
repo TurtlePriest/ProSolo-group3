@@ -4,6 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
+
 <h1>Create</h1>
 
 <h4>Case</h4>
@@ -14,24 +15,34 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control"/>
+                <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TimeFrame" class="control-label"></label>
-                <input asp-for="TimeFrame" class="form-control"/>
+                <input asp-for="TimeFrame" class="form-control" />
                 <span asp-validation-for="TimeFrame" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CaseDescription" class="control-label"></label>
+                <input asp-for="CaseDescription" class="form-control" />
+                <span asp-validation-for="CaseDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="NumberOfProducts" class="control-label"></label>
-                <input asp-for="NumberOfProducts" class="form-control"/>
+                <input asp-for="NumberOfProducts" class="form-control" />
                 <span asp-validation-for="NumberOfProducts" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="ProposedPrice" class="control-label"></label>
-                <input asp-for="ProposedPrice" class="form-control"/>
+                <input asp-for="ProposedPrice" class="form-control" />
                 <span asp-validation-for="ProposedPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerId" class="control-label"></label>
+                <input asp-for="CustomerId" class="form-control" />
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -39,7 +50,7 @@
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

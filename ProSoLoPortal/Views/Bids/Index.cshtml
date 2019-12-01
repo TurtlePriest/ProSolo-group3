@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ProSoLoPortal.Models.Bids>
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<ProSoLoPortal.Models.Bids>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,18 +7,10 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<a asp-action="Index" asp-controller="case">Go back</a>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Case)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserRefId)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProposedTimeFrame)
             </th>
@@ -28,26 +21,25 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Case.CaseId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserRefId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProposedTimeFrame)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BidPrice)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BidId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BidId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BidId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProposedTimeFrame)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BidPrice)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-controller="case" asp-route-id="@item.CaseRefId">Details</a>
+                    @if (User.IsInRole("Manufacturer"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.BidId">Delete</a>
+                    }
+
+                </td>
+            </tr>
+        }
+
     </tbody>
 </table>
