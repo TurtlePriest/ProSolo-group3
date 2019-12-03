@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using ProSoLoPortal.Helpers;
+using ProSoLoPortal.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

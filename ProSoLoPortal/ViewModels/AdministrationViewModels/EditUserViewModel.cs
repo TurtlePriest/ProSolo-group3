@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ProSoLoPortal.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProSoLoPortal.Models
+namespace ProSoLoPortal.ViewModels.AdministrationViewModels
 {
-    public class ApplicationUser : IdentityUser
+    public class EditUserViewModel
     {
-        // Add custom properties
+        public string Id { get; set; }
 
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -17,7 +17,10 @@ namespace ProSoLoPortal.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required]
+        public string UserName { get; set; }
+
+        public string Email { get; set; }
+
         [Display(Name = "Role")]
         public string RoleName { get; set; }
     }

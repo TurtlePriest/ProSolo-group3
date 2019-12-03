@@ -1,19 +1,17 @@
-﻿@using ProSoLoPortal.Helpers;
-@model ProSoLoPortal.ViewModels.UserViewModel
+﻿@model ProSoLoPortal.ViewModels.UserViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Administration index</h1>
+<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <form asp-controller="Administration" asp-action="Index" method="get">
     <p>
-
-        Role: <select asp-for="Role" asp-items="Html.GetEnumSelectList<ProSoLoPortal.Helpers.RolesNames>()">
+        Role: <select asp-for="Role" asp-items="Model.RoleNameList">
             <option value="">All</option>
         </select>
 

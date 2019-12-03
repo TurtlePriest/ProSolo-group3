@@ -30,66 +30,51 @@ namespace ProSoLoPortal.Data
             // Create the Admin role
             if (!(await roleManager.RoleExistsAsync("Admin")))
             {
-                IdentityRole role = new IdentityRole
-                {
-                    Name = RolesNames.Admin.ToString()
-                };
+                IdentityRole role = new IdentityRole();
+                role.Name = RolesNames.Admin.ToString();
 
-                // We could make a custom role class to add custom properties like the "ApplicationUser" have other attributes -MH
+                // We could make a customer class to add custom properties like the "ApplicationUser" -MH
+
                 //role.Description = "Perform all the operations.";
 
-                await roleManager.CreateAsync(role);
+                IdentityResult roleResult = await roleManager.CreateAsync(role);
             }
 
             // Create the Employee role
             if (!(await roleManager.RoleExistsAsync("Employee")))
             {
-                IdentityRole role = new IdentityRole
-                {
-                    Name = RolesNames.Employee.ToString()
-                };
-                await roleManager.CreateAsync(role);
+                IdentityRole role = new IdentityRole();
+                role.Name = RolesNames.Employee.ToString();
+                IdentityResult roleResult = await roleManager.CreateAsync(role);
             }
 
             // Create the Manufacturer role
             if (!(await roleManager.RoleExistsAsync("Manufacturer")))
             {
-                IdentityRole role = new IdentityRole
-                {
-                    Name = RolesNames.Manufacturer.ToString()
-                };
-                await roleManager.CreateAsync(role);
+                IdentityRole role = new IdentityRole();
+                role.Name = RolesNames.Manufacturer.ToString();
+                IdentityResult roleResult = await roleManager.CreateAsync(role);
             }
 
             // Create the Customer role
             if (!(await roleManager.RoleExistsAsync("Customer")))
             {
-                IdentityRole role = new IdentityRole
-                {
-                    Name = RolesNames.Customer.ToString()
-                };
-                await roleManager.CreateAsync(role);
+                IdentityRole role = new IdentityRole();
+                role.Name = RolesNames.Customer.ToString();
+                IdentityResult roleResult = await roleManager.CreateAsync(role);
             }
 
-            // Maybe this should be deleted?
-            // Create the TEST role
             if (!(await roleManager.RoleExistsAsync("TEST")))
             {
-                var role = new IdentityRole
-                {
-                    Name = RolesNames.TEST.ToString()
-                };
+                var role = new IdentityRole();
+                role.Name = RolesNames.TEST.ToString();
                 await roleManager.CreateAsync(role);
             }
 
-            // Maybe this should be deleted?
-            // Create the TEST2 role
             if (!(await roleManager.RoleExistsAsync("TEST2")))
             {
-                var role = new IdentityRole
-                {
-                    Name = RolesNames.TEST2.ToString()
-                };
+                var role = new IdentityRole();
+                role.Name = RolesNames.TEST2.ToString();
                 await roleManager.CreateAsync(role);
             }
         }
@@ -101,13 +86,11 @@ namespace ProSoLoPortal.Data
             // Creates an Admin for the system
             if ((await userManager.FindByNameAsync("admin@admin.com")) == null)
             {
-                ApplicationUser user = new ApplicationUser
-                {
-                    UserName = "admin@admin.com",
-                    Email = "admin@admin.com",
-                    FirstName = "Admin",
-                    LastName = "User"
-                };
+                ApplicationUser user = new ApplicationUser();
+                user.UserName = "admin@admin.com";
+                user.Email = "admin@admin.com";
+                user.FirstName = "Admin";
+                user.LastName = "User";
 
 
                 IdentityResult result = await userManager.CreateAsync(user, "1");
@@ -122,13 +105,11 @@ namespace ProSoLoPortal.Data
             // Creates a test Employee
             if ((await userManager.FindByNameAsync("Emp@email.com")) == null)
             {
-                ApplicationUser user = new ApplicationUser
-                {
-                    UserName = "Emp@email.com",
-                    Email = "Emp@email.com",
-                    FirstName = "Employee",
-                    LastName = "User"
-                };
+                ApplicationUser user = new ApplicationUser();
+                user.UserName = "Emp@email.com";
+                user.Email = "Emp@email.com";
+                user.FirstName = "Employee";
+                user.LastName = "User";
 
 
                 IdentityResult result = await userManager.CreateAsync(user, "1");
@@ -143,13 +124,11 @@ namespace ProSoLoPortal.Data
             // Creates a test Manufacturer
             if ((await userManager.FindByNameAsync("Man@email.com")) == null)
             {
-                ApplicationUser user = new ApplicationUser
-                {
-                    UserName = "Man@email.com",
-                    Email = "Man@email.com",
-                    FirstName = "Manufacturer",
-                    LastName = "User"
-                };
+                ApplicationUser user = new ApplicationUser();
+                user.UserName = "Man@email.com";
+                user.Email = "Man@email.com";
+                user.FirstName = "Manufacturer";
+                user.LastName = "User";
 
 
                 IdentityResult result = await userManager.CreateAsync(user, "1");
@@ -164,13 +143,11 @@ namespace ProSoLoPortal.Data
             // Creates a test Customer
             if ((await userManager.FindByNameAsync("Cus@email.com")) == null)
             {
-                ApplicationUser user = new ApplicationUser
-                {
-                    UserName = "Cus@email.com",
-                    Email = "Cus@email.com",
-                    FirstName = "Customer",
-                    LastName = "User"
-                };
+                ApplicationUser user = new ApplicationUser();
+                user.UserName = "Cus@email.com";
+                user.Email = "Cus@email.com";
+                user.FirstName = "Customer";
+                user.LastName = "User";
 
                 IdentityResult result = await userManager.CreateAsync(user, "1");
 
