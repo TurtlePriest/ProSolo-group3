@@ -1,0 +1,28 @@
+﻿<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+    </div>
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="inputGroupFile01"
+               aria-describedby="inputGroupFileAddon01">
+        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    console.log($(this));
+                    var fileLabel = $(this).next('.custom-file-label');
+                    var files = $(this)[0].files;
+                    if (files.length > 1) {
+                        fileLabel.html(files.length + ' files selected ');
+                    }
+                    else if (files.length == 1) {
+                        fileLabel.html(files[0].name);
+                    }
+                });
+            })
+    </script>
+}

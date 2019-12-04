@@ -14,5 +14,7 @@ namespace ProSoLoPortal.Data
         public DbSet<ProSoLoPortal.Models.Bids> Bids { get; set; }
         
         public DbSet<ProSoLoPortal.Models.Case> Case { get; set; }
+        
+        public DbSet<ProSoLoPortal.Models.Imagebank> Imagebank { get; set; }
     }
 }
