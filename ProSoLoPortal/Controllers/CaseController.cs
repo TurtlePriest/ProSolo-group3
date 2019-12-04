@@ -10,10 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using ProSoLoPortal.Data;
 using ProSoLoPortal.Models;
 using ProSoLoPortal.ViewModels.CaseViewModels;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ProSoLoPortal.Controllers
 {
-
     public class CaseController : Controller
     {
         private readonly UserManager<ApplicationUser> UserManager;
@@ -27,19 +27,18 @@ namespace ProSoLoPortal.Controllers
             _context = context;
         }
 
-
         [Authorize(Roles = "Admin, Employee, Customer, Manufacturer")]
         // GET: Case
         public async Task<IActionResult> Index()
         {
             var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
-            
-            if(CurrentUser.RoleName.Equals("Customer"))
+
+            if (CurrentUser.RoleName.Equals("Customer"))
             {
                 var cases = from c in _context.Case
                             select c;
-               cases = cases.Where(s => s.CustomerId.Equals(CurrentUser.Id));
-               return View(cases);
+                cases = cases.Where(s => s.CustomerId.Equals(CurrentUser.Id));
+                return View(cases);
             }
             if (CurrentUser.RoleName.Equals("Employee"))
             {
@@ -48,11 +47,18 @@ namespace ProSoLoPortal.Controllers
                 cases = cases.Where(s => s.EmployeeId.Equals(CurrentUser.Id));
                 return View(cases);
             }
-            if(CurrentUser.RoleName.Equals("Manufacturer"))
+            if (CurrentUser.RoleName.Equals("Manufacturer"))
             {
                 var cases = from c in _context.Case
                             select c;
+                var bids = from b in _context.Bids
+                           select b;
+                bids = bids.Where(s => s.UserRefId.Equals(CurrentUser.Id));
                 cases = cases.Where(s => s.IsLocked.Equals(false) && s.IsFinished.Equals(false));
+                foreach (Bids b in bids)
+                {
+                    cases = cases.Where(s => !s.CaseId.Equals(b.CaseRefId));
+                }
                 return View(cases);
             }
             return View(await _context.Case.ToListAsync());
@@ -133,12 +139,15 @@ namespace ProSoLoPortal.Controllers
                 try
                 {
                     var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
+                    ViewBag.Name = "Bad";
+
                     Bids bid = new Bids
                     {
                         ProposedTimeFrame = model.ProposedTimeFrame,
                         BidPrice = model.BidPrice,
                         CaseRefId = @case.CaseId,
-                        UserRefId = CurrentUser.Id
+                        UserRefId = CurrentUser.Id,
+                        CaseName = @case.Name
                     };
                     _context.Bids.Update(bid);
                     await _context.SaveChangesAsync();
@@ -181,7 +190,6 @@ namespace ProSoLoPortal.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Roles = "Admin, Employee")]
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CaseId,CustomerId,EmployeeId,Name,TimeFrame,NumberOfProducts,Seller,ProposedPrice,UserRefId,IsLocked,IsFinished,TimeFrameFexible")] Case @case)

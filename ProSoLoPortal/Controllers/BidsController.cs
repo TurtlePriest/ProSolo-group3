@@ -31,7 +31,7 @@ namespace ProSoLoPortal.Controllers
             if (CurrentUser.RoleName.Equals("Customer") || CurrentUser.RoleName.Equals("Employee"))
             {
                 var bids = from b in _context.Bids
-                            select b;
+                           select b;
                 bids = bids.Where(s => s.CaseRefId.Equals(id));
                 return View(bids);
             }
@@ -39,8 +39,13 @@ namespace ProSoLoPortal.Controllers
             {
                 var bids = from b in _context.Bids
                            select b;
+                var cases = from c in _context.Case
+                            select c;
                 bids = bids.Where(s => s.UserRefId.Equals(CurrentUser.Id) && !s.Case.IsLocked && !s.Case.IsFinished);
-                
+                foreach (Bids b in bids)
+                {
+                    cases = cases.Where(s => s.CaseId.Equals(b.CaseRefId));
+                }
                 return View(bids);
             }
             var applicationDbContext = _context.Bids.Include(b => b.Case);
@@ -74,7 +79,7 @@ namespace ProSoLoPortal.Controllers
         }
 
         // POST: Bids/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -85,12 +90,14 @@ namespace ProSoLoPortal.Controllers
                 var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
                 bids.UserRefId = CurrentUser.Id;
                 bids.CaseRefId = id;
+                var case1 = await _context.Case.FindAsync(id);
+                bids.CaseName = case1.Name;
                 _context.Add(bids);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("index", "Case");
             }
             ViewData["CaseRefId"] = new SelectList(_context.Case, "CaseId", "CaseId", bids.CaseRefId);
-            return RedirectToAction("index","Case");
+            return RedirectToAction("index", "Case");
         }
 
         // GET: Bids/Edit/5
@@ -111,7 +118,7 @@ namespace ProSoLoPortal.Controllers
         }
 
         // POST: Bids/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]

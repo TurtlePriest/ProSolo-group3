@@ -12,6 +12,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Case.Name)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ProposedTimeFrame)
             </th>
             <th>
@@ -25,21 +28,21 @@
         {
             <tr>
                 <td>
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.ProposedTimeFrame)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.BidPrice)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-controller="case" asp-route-id="@item.CaseRefId">Details</a>
+                    <a asp-action="Details" asp-controller="case" asp-route-id="@item.CaseRefId"></a>
                     @if (User.IsInRole("Manufacturer"))
                     {
                         <a asp-action="Delete" asp-route-id="@item.BidId">Delete</a>
                     }
-
                 </td>
             </tr>
         }
-
     </tbody>
 </table>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProSoLoPortal.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,6 +16,6 @@ namespace ProSoLoPortal.ViewModels.CaseViewModels
         public int CaseId { get; set; }
         public string UserId { get; set; }
 
-
+        public string CaseName { get; set; }
     }
 }

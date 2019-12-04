@@ -11,14 +11,23 @@ namespace ProSoLoPortal.Models
     {
         [Key]
         public int BidId { get; set; }
+
         [ForeignKey("Case")]
         public int CaseRefId { get; set; }
+
+        [Display(Name = "Name of case")]
+        public string CaseName { get; set; }
+
         public Case Case { get; set; }
+
         [ForeignKey("ApplicationUser")]
         public string UserRefId { get; set; }
+
         public ApplicationUser User { get; set; }
-        [Display (Name = "Proposed time frame")]
+
+        [Display(Name = "Proposed time frame")]
         public string ProposedTimeFrame { get; set; }
+
         [Display(Name = "Proposed price")]
         public int BidPrice { get; set; }
     }
