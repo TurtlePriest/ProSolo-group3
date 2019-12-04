@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using ProSoLoPortal.Data;
 using ProSoLoPortal.Models;
 using ProSoLoPortal.ViewModels.CaseViewModels;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ProSoLoPortal.Controllers
 {
@@ -31,6 +35,8 @@ namespace ProSoLoPortal.Controllers
         // GET: Case
         public async Task<IActionResult> Index()
         {
+
+
             var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
 
             if (CurrentUser.RoleName.Equals("Customer"))
@@ -67,6 +73,7 @@ namespace ProSoLoPortal.Controllers
         // GET: Case/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //byte[] imageByteData = System.IO.File.ReadAllBytes("C:/Users/Andreas Ibsen Cor/Pictures/zru2C3e0_400x400.jpg");
             if (id == null)
             {
                 return NotFound();
@@ -78,6 +85,11 @@ namespace ProSoLoPortal.Controllers
             {
                 return NotFound();
             }
+
+            byte[] imageByteData = @case.ImagePath;
+            string imageBase64Data = Convert.ToBase64String(imageByteData);
+            string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
+            ViewBag.ImageData = imageDataURL;
 
             return View(@case);
         }
@@ -95,10 +107,23 @@ namespace ProSoLoPortal.Controllers
         [Authorize(Roles = "Admin, Employee")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string CustomerId, [Bind("CaseId,Name,TimeFrame,NumberOfProducts,Seller,ProposedPrice,IsLocked,IsFinished,TimeFrameFexible")] Case @case)
+        public async Task<IActionResult> Create(string CustomerId, IList<IFormFile> files, Case @case)
         {
             if (ModelState.IsValid)
             {
+                //@case.ImagePath = System.IO.File.ReadAllBytes(file.ToString());
+                foreach(var file in files)
+                {
+                    if(file.Length > 0)
+                    {
+                        using (var reader = new MemoryStream())
+                        {
+                            file.CopyTo(reader);
+                            var fileBytes = reader.ToArray();
+                            @case.ImagePath = fileBytes;
+                        }
+                    }
+                }
                 var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
                 @case.EmployeeId = CurrentUser.Id;
                 var customer = await UserManager.FindByNameAsync(CustomerId);
