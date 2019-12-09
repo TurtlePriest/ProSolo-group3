@@ -12,6 +12,7 @@ using ProSoLoPortal.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProSoLoPortal.Models;
 
 namespace ProSoLoPortal
 {
@@ -28,10 +29,34 @@ namespace ProSoLoPortal
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                options.UseSqlServer(Configuration.GetConnectionString("AzureDbConnection")));
+
+
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                // Added this for an easy way to make a new user! **Should not be in production software.** -MH
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 1;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+
+
+                options.SignIn.RequireConfirmedAccount = false;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultUI()
+            .AddDefaultTokenProviders();
+
+            services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false;
+            }).AddXmlSerializerFormatters();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -56,15 +81,24 @@ namespace ProSoLoPortal
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+
+            app.UseMvc(routes =>
             {
-                endpoints.MapControllerRoute(
+                routes.MapRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller=Home}/{action=Index}/{id?}");
+            //    endpoints.MapRazorPages();
+            //});
         }
     }
 }

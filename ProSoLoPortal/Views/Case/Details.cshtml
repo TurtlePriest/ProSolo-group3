@@ -1,0 +1,63 @@
+﻿@model ProSoLoPortal.Models.Case
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Case</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeFrame)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TimeFrame)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaseDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaseDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfProducts)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfProducts)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProposedPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProposedPrice)
+        </dd>
+
+
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeFrameFexible)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TimeFrameFexible)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a> 
+    @if(User.IsInRole("Employee") || User.IsInRole("Admin"))
+    {
+        
+<a asp-action="Edit">Edit</a>
+    }
+    
+</div>
