@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ProSoLoPortal",
+    "\\ProSoLoPortal\\Controllers",
+    "\\ProSoLoPortal\\Models",
+    "\\ProSoLoPortal\\Views",
+    "\\ProSoLoPortal\\Views\\Case"
   ],
+  "SelectedNode": "\\ProSoLoPortal\\ProSoLoPortal.sln",
   "PreviewInSolutionExplorer": false
 }

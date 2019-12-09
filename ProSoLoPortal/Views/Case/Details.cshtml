@@ -8,7 +8,7 @@
 
 <div>
     <h4>Case</h4>
-    <hr/>
+    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -52,12 +52,12 @@
         </dd>
     </dl>
 </div>
+<img width="200" height="200" src="@ViewBag.ImageData" />
 <div>
     <a asp-action="Index">Back to List</a> 
     @if(User.IsInRole("Employee") || User.IsInRole("Admin"))
     {
-        
-<a asp-action="Edit">Edit</a>
+        <a asp-action="Edit">Edit</a>
     }
     
 </div>
