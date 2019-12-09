@@ -12,7 +12,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Case.Name)
+                @Html.DisplayNameFor(model => model.CaseName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProposedTimeFrame)
@@ -28,6 +28,7 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.CaseName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ProposedTimeFrame)
