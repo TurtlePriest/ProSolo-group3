@@ -8,14 +8,12 @@ namespace ProSoLoPortal.Models
 {
     public class Imagebank
     {
-
         [Key]
         public int PhotoID { get; set; }
 
+        [Display(Name = "Description")]
         public string PhotoDescription { get; set; }
 
-
-
-
+        public byte[] ImageByte { get; set; }
     }
 }

@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\madsm\\Source\\Repos\\TurtlePriest\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj": {}
+    "C:\\Users\\Andreas Frederiksen\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\madsm\\Source\\Repos\\TurtlePriest\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj": {
+    "C:\\Users\\Andreas Frederiksen\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\madsm\\Source\\Repos\\TurtlePriest\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj",
+        "projectUniqueName": "C:\\Users\\Andreas Frederiksen\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj",
         "projectName": "ProSoLoPortal",
-        "projectPath": "C:\\Users\\madsm\\Source\\Repos\\TurtlePriest\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj",
-        "packagesPath": "C:\\Users\\madsm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\madsm\\Source\\Repos\\TurtlePriest\\ProSolo-group3\\ProSoLoPortal\\obj\\",
+        "projectPath": "C:\\Users\\Andreas Frederiksen\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj",
+        "packagesPath": "C:\\Users\\Andreas Frederiksen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Andreas Frederiksen\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\madsm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Andreas Frederiksen\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -38,6 +41,10 @@
       "frameworks": {
         "netcoreapp3.0": {
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.0, )"
+            },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
               "version": "[3.0.0, )"

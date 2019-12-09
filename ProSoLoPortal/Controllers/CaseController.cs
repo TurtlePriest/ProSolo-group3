@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -152,7 +153,7 @@ namespace ProSoLoPortal.Controllers
                     _context.Bids.Update(bid);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
                 {
                     if (!CaseExists(@case.CaseId))
                     {
@@ -206,7 +207,7 @@ namespace ProSoLoPortal.Controllers
                     _context.Update(@case);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
                 {
                     if (!CaseExists(@case.CaseId))
                     {
