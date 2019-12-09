@@ -24,31 +24,26 @@ namespace ProSoLoPortal.Controllers
         // GET: Imagebank
         public async Task<IActionResult> Index()
         {
-            //var images = from i in _context.Imagebank
-            //             select i;
-            //string[] ImageStrings = new string[images.Count()];
-            //int counter = 0;
-            //foreach (var i in images)
-            //{
-            //    byte[] imageByteData = i.ImageByte;
-            //    string imageBase64Data = Convert.ToBase64String(imageByteData);
-            //    string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
-            //    ImageStrings[counter] = imageDataURL;
-            //    counter++;
-            //}
-
-            //ViewBag.ImageData = ImageStrings;
-            return View(await _context.Imagebank.ToListAsync());
-        }
-        public String ConvertByteArrayToBase64(int id)
-        {
             var images = from i in _context.Imagebank
                          select i;
-            images = images.Where(s => s.PhotoID.Equals(id));
-            byte[] imageByteData = images.FirstOrDefault().ImageByte;
-            string imageBase64Data = Convert.ToBase64String(imageByteData);
-            string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
-            return (imageDataURL);
+            string[,] ImageStrings = new string[images.Count(), 2];
+            int counter = 0;
+            foreach (var i in images)
+            {
+                byte[] imageByteData = i.ImageByte;
+                string imageBase64Data = Convert.ToBase64String(imageByteData);
+                string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
+                ImageStrings[counter, 0] = imageDataURL;
+                ImageStrings[counter, 1] = i.PhotoDescription;
+                counter++;
+            }
+
+            ViewBag.ImageData = ImageStrings;
+            return View(await _context.Imagebank.ToListAsync());
+        }
+        public string ConvertByteArrayToBase64(int id)
+        {
+            return "https://images.unsplash.com/photo-1499084732479-de2c02d45fcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80";
         }
 
         // GET: Imagebank/Details/5
@@ -90,9 +85,8 @@ namespace ProSoLoPortal.Controllers
                     {
                         using (var reader = new MemoryStream())
                         {
-                            //file.CopyTo(reader);
-                            //var fileBytes = reader.ToArray();
-                            byte[] fileBytes = { 0, 0, 0 };
+                            file.CopyTo(reader);
+                            var fileBytes = reader.ToArray();
                             @imagebank.ImageByte = fileBytes;
                         }
                     }
