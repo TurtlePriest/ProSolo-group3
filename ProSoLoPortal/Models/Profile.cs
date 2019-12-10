@@ -13,6 +13,7 @@ namespace ProSoLoPortal.Models
         public int ProfileId { get; set; }
 
         [ForeignKey("ApplicationUser")]
+        [Display(Name = "Customer name")]
         public string UserRefId { get; set; }
 
         public ApplicationUser User { get; set; }

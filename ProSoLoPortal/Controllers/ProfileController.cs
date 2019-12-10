@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,11 @@ namespace ProSoLoPortal.Controllers
     public class ProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> UserManager;
 
-        public ProfileController(ApplicationDbContext context)
+        public ProfileController(ApplicationDbContext context, UserManager<ApplicationUser> UserManager)
         {
+            this.UserManager = UserManager;
             _context = context;
         }
 
@@ -53,14 +56,18 @@ namespace ProSoLoPortal.Controllers
         }
 
         // POST: Profile/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProfileId,UserRefId,EmployeeId,Rating,ProfileText")] Profile profile)
+        public async Task<IActionResult> Create(string UserRefId, Profile profile)
         {
             if (ModelState.IsValid)
             {
+                var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
+                profile.EmployeeId = CurrentUser.Id;
+                var customer = await UserManager.FindByNameAsync(UserRefId);
+                profile.UserRefId = customer.Id;
                 _context.Add(profile);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -87,7 +94,7 @@ namespace ProSoLoPortal.Controllers
         }
 
         // POST: Profile/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
