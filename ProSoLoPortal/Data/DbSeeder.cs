@@ -31,7 +31,7 @@ namespace ProSoLoPortal.Data
             if (!(await roleManager.RoleExistsAsync("Admin")))
             {
                 IdentityRole role = new IdentityRole();
-                role.Name = RolesNames.ROLE_ADMIN.ToString();
+                role.Name = RolesNames.Admin.ToString();
 
                 // We could make a customer class to add custom properties like the "ApplicationUser" -MH
 
@@ -44,7 +44,7 @@ namespace ProSoLoPortal.Data
             if (!(await roleManager.RoleExistsAsync("Employee")))
             {
                 IdentityRole role = new IdentityRole();
-                role.Name = RolesNames.ROLE_EMPLOYEE.ToString();
+                role.Name = RolesNames.Employee.ToString();
                 IdentityResult roleResult = await roleManager.CreateAsync(role);
             }
 
@@ -52,7 +52,7 @@ namespace ProSoLoPortal.Data
             if (!(await roleManager.RoleExistsAsync("Manufacturer")))
             {
                 IdentityRole role = new IdentityRole();
-                role.Name = RolesNames.ROLE_MANUFACTURER.ToString();
+                role.Name = RolesNames.Manufacturer.ToString();
                 IdentityResult roleResult = await roleManager.CreateAsync(role);
             }
 
@@ -60,21 +60,21 @@ namespace ProSoLoPortal.Data
             if (!(await roleManager.RoleExistsAsync("Customer")))
             {
                 IdentityRole role = new IdentityRole();
-                role.Name = RolesNames.ROLE_CUSTOMER.ToString();
+                role.Name = RolesNames.Customer.ToString();
                 IdentityResult roleResult = await roleManager.CreateAsync(role);
             }
 
             if (!(await roleManager.RoleExistsAsync("TEST")))
             {
                 var role = new IdentityRole();
-                role.Name = RolesNames.ROLE_TEST.ToString();
+                role.Name = RolesNames.TEST.ToString();
                 await roleManager.CreateAsync(role);
             }
 
             if (!(await roleManager.RoleExistsAsync("TEST2")))
             {
                 var role = new IdentityRole();
-                role.Name = RolesNames.ROLE_TEST2.ToString();
+                role.Name = RolesNames.TEST2.ToString();
                 await roleManager.CreateAsync(role);
             }
         }

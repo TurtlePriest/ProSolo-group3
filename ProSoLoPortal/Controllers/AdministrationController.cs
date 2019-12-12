@@ -58,7 +58,7 @@ namespace ProSoLoPortal.Controllers
             {
                 users = users.Where(x => x.RoleName == Role);
             }
-
+            
             var userVM = new UserViewModel
             {
                 RoleNameList = new SelectList(await RoleQuery.Distinct().ToListAsync()),
@@ -91,34 +91,6 @@ namespace ProSoLoPortal.Controllers
             return View();
         }
 
-        // POST: Adminstration/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id, FirstName, LastName, UserName, Email, RoleName, PasswordHash")] ApplicationUser user)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        user = new ApplicationUser
-        //        {
-        //            FirstName = user.FirstName,
-        //            LastName = user.LastName,
-        //            UserName = user.UserName,
-        //            Email = user.Email,
-        //            RoleName = user.RoleName
-        //        };
-        //        var result = await userManager.CreateAsync(user, user.PasswordHash);
-        //        userManager.AddToRoleAsync(user, user.RoleName).Wait();
-
-        //        //_context.Add(user);
-
-        //        //await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(user);
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUserViewModel model)
@@ -131,7 +103,7 @@ namespace ProSoLoPortal.Controllers
                     LastName = model.LastName,
                     UserName = model.UserName,
                     Email = model.Email,
-                    RoleName = model.RoleName
+                    RoleName = Enum.GetName(typeof(ProSoLoPortal.Helpers.RolesNames), Int32.Parse(model.RoleName))
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
 
@@ -140,11 +112,6 @@ namespace ProSoLoPortal.Controllers
                     userManager.AddToRoleAsync(user, user.RoleName).Wait();
                     return RedirectToAction(nameof(Index));
                 }
-
-
-                //_context.Add(user);
-
-                //await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
@@ -154,17 +121,18 @@ namespace ProSoLoPortal.Controllers
         // GET: Adminstration/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
+            // Find the user with that Id
             var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            EditUserViewModel editUserViewModel = new EditUserViewModel
             {
-                return NotFound();
-            }
-            return View(user);
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Email = user.Email,
+                RoleName = user.RoleName
+            };
+            return View(editUserViewModel);
         }
 
         // POST: Adminstration/Edit/5
@@ -172,37 +140,27 @@ namespace ProSoLoPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,FirstName,LastName, UserName, Email")] ApplicationUser user)
+        public async Task<IActionResult> Edit(EditUserViewModel model)
         {
-            if (id != user.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                string role = Enum.GetName(typeof(ProSoLoPortal.Helpers.RolesNames), Int32.Parse(model.RoleName));
+                ApplicationUser user = await _context.Users.FindAsync(model.Id);
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+                user.RoleName = role;
+
+                _context.Update(user);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View();
         }
 
-        // GET: Movies/Delete/5
+
+        // GET: Adminstration/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -210,14 +168,13 @@ namespace ProSoLoPortal.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(user);
         }
 
         // POST: Adminstration/Delete/5
@@ -225,8 +182,8 @@ namespace ProSoLoPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var movie = await _context.Users.FindAsync(id);
-            _context.Users.Remove(movie);
+            var user = await _context.Users.FindAsync(id);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
