@@ -14,7 +14,7 @@ using ProSoLoPortal.ViewModels.AdministrationViewModels;
 
 namespace ProSoLoPortal.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Employee")]
     public class AdministrationController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -86,26 +86,57 @@ namespace ProSoLoPortal.Controllers
         }
 
         // GET: Adminstration/Create
-        public IActionResult Create()
+        public IActionResult Create(bool isAdmin)
         {
+            ViewBag.isAdmin = isAdmin;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateUserViewModel model)
+        public async Task<IActionResult> Create(CreateUserViewModel model, string ProfileText, bool isAdmin)
         {
+            
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                var user = new ApplicationUser();
+                if (isAdmin)
                 {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    RoleName = Enum.GetName(typeof(ProSoLoPortal.Helpers.RolesNames), Int32.Parse(model.RoleName))
-                };
+                    user = new ApplicationUser
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        UserName = model.Email,
+                        Email = model.Email,
+                        RoleName = Enum.GetName(typeof(ProSoLoPortal.Helpers.RolesNames), Int32.Parse(model.RoleName))
+                    };
+                }
+                else
+                {
+                    user = new ApplicationUser
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        UserName = model.Email,
+                        Email = model.Email,
+                        RoleName = model.RoleName
+                    };
+                }
                 var result = await userManager.CreateAsync(user, model.Password);
+                var CurrentUser = await userManager.GetUserAsync(HttpContext.User);
+                if(user.RoleName.Equals("Customer") || user.RoleName.Equals("Manufacturer"))
+                {
+                    var profile = new Profile
+                    {
+                        UserName = model.Email,
+                        UserRefId = user.Id,
+                        Rating = 0,
+                        ProfileText = ProfileText,
+                        EmployeeId = CurrentUser.Id
+                    };
+                    _context.Profile.Add(profile);
+                }
+                await _context.SaveChangesAsync();
 
                 if (result.Succeeded)
                 {
@@ -144,13 +175,11 @@ namespace ProSoLoPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                string role = Enum.GetName(typeof(ProSoLoPortal.Helpers.RolesNames), Int32.Parse(model.RoleName));
                 ApplicationUser user = await _context.Users.FindAsync(model.Id);
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
                 user.UserName = model.UserName;
                 user.Email = model.Email;
-                user.RoleName = role;
 
                 _context.Update(user);
                 await _context.SaveChangesAsync();
@@ -184,6 +213,10 @@ namespace ProSoLoPortal.Controllers
         {
             var user = await _context.Users.FindAsync(id);
             _context.Users.Remove(user);
+            var profiles = from p in _context.Profile
+                           where p.UserRefId == id
+                           select p;
+            _context.Profile.Remove(profiles.FirstOrDefault());
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -63,20 +63,6 @@ namespace ProSoLoPortal.Data
                 role.Name = RolesNames.Customer.ToString();
                 IdentityResult roleResult = await roleManager.CreateAsync(role);
             }
-
-            if (!(await roleManager.RoleExistsAsync("TEST")))
-            {
-                var role = new IdentityRole();
-                role.Name = RolesNames.TEST.ToString();
-                await roleManager.CreateAsync(role);
-            }
-
-            if (!(await roleManager.RoleExistsAsync("TEST2")))
-            {
-                var role = new IdentityRole();
-                role.Name = RolesNames.TEST2.ToString();
-                await roleManager.CreateAsync(role);
-            }
         }
 
         // Password for all seed users are set to 1 for ez logins.

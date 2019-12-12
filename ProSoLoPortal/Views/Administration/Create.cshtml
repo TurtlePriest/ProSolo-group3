@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" asp-route-isAdmin="@ViewBag.isAdmin">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
@@ -21,11 +21,6 @@
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -42,17 +37,32 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
+            @if (@ViewBag.isAdmin == false)
+            {
+                <div class="form-group">
+                    <label asp-for="RoleName" class="control-label">Role</label>
+                    <select asp-for="RoleName" class="custom-select mr-sm-2" id="RoleName" name="RoleName">
+                        <option>Manufacturer</option>
+                        <option>Customer</option>
+                    </select>
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                </div>
+            }
+            else if (@ViewBag.isAdmin == true)
+            {
+                <div class="form-group">
+                    <label asp-for="RoleName" class="control-label">Role</label>
+                    <select asp-for="RoleName" class="custom-select mr-sm-2" asp-items="Html.GetEnumSelectList<RolesNames>()">
+                        <option value="">Please Select</option>
+                    </select>
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                </div>
+            }
+
             <div class="form-group">
-
-                <label asp-for="RoleName" class="control-label">Role</label>
-                <select asp-for="RoleName" class="custom-select mr-sm-2" asp-items="Html.GetEnumSelectList<RolesNames>()">
-                    <option value="">Please Select</option>
-                </select>
-                <span asp-validation-for="RoleName" class="text-danger"></span>
-
-
+                <label class="control-label">Profile text</label>
+                <input type="text" name="ProfileText" id="ProfileText" />
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
