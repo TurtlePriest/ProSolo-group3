@@ -58,7 +58,7 @@ namespace ProSoLoPortal.Controllers
             {
                 users = users.Where(x => x.RoleName == Role);
             }
-
+            
             var userVM = new UserViewModel
             {
                 RoleNameList = new SelectList(await RoleQuery.Distinct().ToListAsync()),

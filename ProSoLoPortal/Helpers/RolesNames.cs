@@ -10,8 +10,6 @@ namespace ProSoLoPortal.Helpers
         Admin,
         Employee,
         Manufacturer,
-        Customer,
-        TEST,
-        TEST2
+        Customer
     }
 }

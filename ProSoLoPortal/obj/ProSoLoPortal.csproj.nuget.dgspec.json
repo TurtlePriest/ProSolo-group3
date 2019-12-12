@@ -1,26 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj": {}
+    "C:\\Users\\Andreas Ibsen Cor\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj": {
+    "C:\\Users\\Andreas Ibsen Cor\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj",
+        "projectUniqueName": "C:\\Users\\Andreas Ibsen Cor\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj",
         "projectName": "ProSoLoPortal",
-        "projectPath": "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj",
-        "packagesPath": "C:\\Users\\krute\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\krute\\OneDrive\\SDU\\3.Semester\\SemesterProject\\Code\\ProSolo-group3\\ProSoLoPortal\\obj\\",
+        "projectPath": "C:\\Users\\Andreas Ibsen Cor\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\ProSoLoPortal.csproj",
+        "packagesPath": "C:\\Users\\Andreas Ibsen Cor\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Andreas Ibsen Cor\\Source\\Repos\\ProSolo-group3\\ProSoLoPortal\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\krute\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+          "C:\\Users\\Andreas Ibsen Cor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
