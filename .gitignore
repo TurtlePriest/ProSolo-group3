@@ -79,3 +79,10 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
+ProSoLoPortal/.vs/ProSoLoPortal/config/applicationhost.config
+ProSoLoPortal/.vs/ProSoLoPortal/DesignTimeBuild/.dtbcache
+ProSoLoPortal/obj/Debug/netcoreapp3.0/ProSoLoPortal.assets.cache
+ProSoLoPortal/obj/project.assets.json
+ProSoLoPortal/obj/ProSoLoPortal.csproj.nuget.cache
+ProSoLoPortal/obj/ProSoLoPortal.csproj.nuget.dgspec.json
+ProSoLoPortal/obj/ProSoLoPortal.csproj.nuget.g.props
