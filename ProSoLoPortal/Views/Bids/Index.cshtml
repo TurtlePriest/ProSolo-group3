@@ -5,6 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
+
 <h1>Index</h1>
 
 <a asp-action="Index" asp-controller="case">Go back</a>
@@ -26,24 +27,65 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CaseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProposedTimeFrame)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BidPrice)
+            </td>
+            @if (User.IsInRole("Customer") && ViewBag.rateClick)
+            {
                 <td>
-                    @Html.DisplayFor(modelItem => item.CaseName)
+                    <form asp-controller="profile" asp-action="GiveRating" asp-route-id="@item.ProfileRefId" asp-route-caseId="@item.CaseRefId">
+                        <select class="form-control" id="rating" name="rating">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                        <input type="submit" value="Submit rating" class="form-control" />
+                    </form>
                 </td>
+
+            }
+            @if (User.IsInRole("Manufacturer") && ViewBag.rateClick)
+            {
                 <td>
-                    @Html.DisplayFor(modelItem => item.ProposedTimeFrame)
+                    <form asp-controller="profile" asp-action="GiveRating" asp-route-caseId="@item.CaseRefId">
+                        <select class="form-control" id="rating" name="rating">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                        <input type="submit" value="Submit rating" class="form-control" />
+                    </form>
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BidPrice)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-controller="case" asp-route-id="@item.CaseRefId"></a>
-                    @if (User.IsInRole("Manufacturer"))
+
+            }
+            <td>
+                <a asp-action="Details" asp-controller="case" asp-route-id="@item.CaseRefId"></a>
+                @if (User.IsInRole("Manufacturer") && !ViewBag.rateClick)
+                {
+                    <a asp-action="Delete" asp-route-id="@item.BidId">Delete</a> <p></p>
+                    <a asp-controller="profile" asp-action="Details" asp-route-caseId="@item.CaseRefId">Show customer profile</a>
+                }
+                @if (User.IsInRole("Customer"))
+                {
+                    <a asp-controller="profile" asp-action="Details" asp-route-id="@item.ProfileRefId">Show manufacturer profile</a><p></p>
+                    if (!ViewBag.rateClick)
                     {
-                        <a asp-action="Delete" asp-route-id="@item.BidId">Delete</a>
+                        <a asp-controller="case" asp-action="Index" asp-route-caseId="@item.CaseRefId" asp-route-bidId="@item.BidId">Pick this manufacturer</a>
                     }
-                </td>
-            </tr>
+                }
+            </td>
+        </tr>
         }
     </tbody>
 </table>

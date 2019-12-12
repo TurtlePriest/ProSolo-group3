@@ -13,11 +13,9 @@ namespace ProSoLoPortal.Models
         public int ProfileId { get; set; }
 
         [ForeignKey("ApplicationUser")]
-        [Display(Name = "Customer name")]
+        [Display(Name = "UserId")]
         public string UserRefId { get; set; }
-
-        public ApplicationUser User { get; set; }
-
+        
         [ForeignKey("ApplicationUser")]
         public string EmployeeId { get; set; }
 
@@ -26,5 +24,8 @@ namespace ProSoLoPortal.Models
         public double Rating { get; set; }
 
         public string ProfileText { get; set; }
+
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
     }
 }

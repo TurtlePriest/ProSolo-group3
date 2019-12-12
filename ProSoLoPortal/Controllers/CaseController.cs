@@ -34,36 +34,66 @@ namespace ProSoLoPortal.Controllers
 
         [Authorize(Roles = "Admin, Employee, Customer, Manufacturer")]
         // GET: Case
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int caseId, int bidId, bool locked, bool showFinished)
         {
-            var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
+            var cases = from c in _context.Case
+                        select c;
+            // pick this manufacturer
+            if (caseId != 0 && bidId != 0)
+            {
+                cases = cases.Where(s => s.CaseId.Equals(caseId));
 
-            if (CurrentUser.RoleName.Equals("Customer"))
-            {
-                var cases = from c in _context.Case
-                            select c;
-                cases = cases.Where(s => s.CustomerId.Equals(CurrentUser.Id));
-                return View(cases);
-            }
-            if (CurrentUser.RoleName.Equals("Employee"))
-            {
-                var cases = from c in _context.Case
-                            select c;
-                cases = cases.Where(s => s.EmployeeId.Equals(CurrentUser.Id));
-                return View(cases);
-            }
-            if (CurrentUser.RoleName.Equals("Manufacturer"))
-            {
-                var cases = from c in _context.Case
-                            select c;
                 var bids = from b in _context.Bids
                            select b;
-                bids = bids.Where(s => s.UserRefId.Equals(CurrentUser.Id));
+                bids = bids.Where(s => s.BidId.Equals(bidId));
+                var @case = cases.FirstOrDefault();
+                @case.IsLocked = true;
+                var @bid = bids.FirstOrDefault();
+                @case.ManufacturerId = @bid.UserRefId;
+                _context.Case.Update(@case);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
+
+            if (CurrentUser.RoleName.Equals("Customer") && !locked)
+            {
+                cases = cases.Where(s => s.CustomerId.Equals(CurrentUser.Id) && !s.IsFinished && !s.IsLocked);
+                return View(cases);
+            }
+            else if (CurrentUser.RoleName.Equals("Customer") && locked)
+            {
+                cases = cases.Where(s => s.CustomerId.Equals(CurrentUser.Id) && s.IsLocked && !s.IsFinished);
+                return View(cases);
+            }
+            if (showFinished && CurrentUser.RoleName.Equals("Employee"))
+            {
+                cases = cases.Where(s => s.EmployeeId.Equals(CurrentUser.Id) && s.IsFinished && s.IsLocked);
+                return View(cases);
+            }
+            if (CurrentUser.RoleName.Equals("Employee") && !locked)
+            {
+                cases = cases.Where(s => s.EmployeeId.Equals(CurrentUser.Id) && !s.IsFinished && !s.IsLocked);
+                return View(cases);
+            } else if (CurrentUser.RoleName.Equals("Employee") && locked)
+            {
+                cases = cases.Where(s => s.EmployeeId.Equals(CurrentUser.Id) && s.IsLocked && !s.IsFinished);
+                return View(cases);
+            }
+            if (CurrentUser.RoleName.Equals("Manufacturer") && !locked)
+            {
+                var bids = from b in _context.Bids
+                           where b.UserRefId == CurrentUser.Id
+                           select b;
                 cases = cases.Where(s => s.IsLocked.Equals(false) && s.IsFinished.Equals(false));
                 foreach (Bids b in bids)
                 {
                     cases = cases.Where(s => !s.CaseId.Equals(b.CaseRefId));
                 }
+                return View(cases);
+            } else if (CurrentUser.RoleName.Equals("Manufacturer") && locked)
+            {
+                cases = cases.Where(s => s.IsLocked.Equals(true) && s.IsFinished.Equals(false) && s.ManufacturerId.Equals(CurrentUser.Id));
                 return View(cases);
             }
             return View(await _context.Case.ToListAsync());
@@ -123,10 +153,15 @@ namespace ProSoLoPortal.Controllers
                         }
                     }
                 }
+
                 var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
                 @case.EmployeeId = CurrentUser.Id;
                 var customer = await UserManager.FindByNameAsync(CustomerId);
                 @case.CustomerId = customer.Id;
+                var profiles = from p in _context.Profile
+                               select p;
+                profiles = profiles.Where(s => s.UserRefId.Equals(customer.Id));
+                @case.ProfileRefId = profiles.FirstOrDefault().ProfileId;
                 _context.Add(@case);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -281,6 +316,17 @@ namespace ProSoLoPortal.Controllers
         private bool CaseExists(int id)
         {
             return _context.Case.Any(e => e.CaseId == id);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Finish(int caseId)
+        {
+            var @case = await _context.Case.FindAsync(caseId);
+            @case.IsFinished = true;
+            _context.Update(@case);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

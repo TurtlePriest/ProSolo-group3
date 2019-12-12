@@ -24,9 +24,6 @@ namespace ProSoLoPortal.Models
         [Required, Display(Name = "Number of products")]
         public int NumberOfProducts { get; set; }
 
-        [Display(Name = "Name of seller")]
-        public string Seller { get; set; }
-
         [Required, Display(Name = "Proposed price of product")]
         public int ProposedPrice { get; set; }
 
@@ -47,5 +44,12 @@ namespace ProSoLoPortal.Models
 
         [Display(Name = "Prototype picture")]
         public byte[] ImagePath { get; set; }
+
+        [ForeignKey("ApplicationUser")]
+        public string ManufacturerId { get; set; }
+        public ApplicationUser Manufacturer { get; set; }
+
+        [ForeignKey("Profile")]
+        public int ProfileRefId { get; set; }
     }
 }

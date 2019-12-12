@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProSoLoPortal.Data;
 
 namespace ProSoLoPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191210173055_ratedupdate")]
+    partial class ratedupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,6 +310,9 @@ namespace ProSoLoPortal.Migrations
                     b.Property<int>("ProposedPrice")
                         .HasColumnType("int");
 
+                    b.Property<string>("Seller")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TimeFrame")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -359,9 +364,6 @@ namespace ProSoLoPortal.Migrations
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserRefId")
                         .HasColumnType("nvarchar(max)");

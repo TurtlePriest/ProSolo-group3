@@ -6,17 +6,11 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserRefId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Employee)
+                @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
@@ -31,10 +25,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserRefId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.Id)
+                @Html.DisplayFor(modelItem => item.UserName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Rating)
@@ -43,9 +34,7 @@
                 @Html.DisplayFor(modelItem => item.ProfileText)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ProfileId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProfileId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProfileId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ProfileId">Edit</a>
             </td>
         </tr>
 }

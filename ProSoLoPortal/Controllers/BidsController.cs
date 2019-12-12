@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -25,31 +26,46 @@ namespace ProSoLoPortal.Controllers
         }
 
         // GET: Bids
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, bool rateClick)
         {
+            ViewBag.rateClick = rateClick;
             var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
-            if (CurrentUser.RoleName.Equals("Customer") || CurrentUser.RoleName.Equals("Employee"))
+            if (CurrentUser.RoleName.Equals("Customer") && rateClick)
+            {
+                var bids = from b in _context.Bids
+                           where b.RatedByCus == false
+                           select b;
+                bids = bids.Where(s => s.Case.IsFinished && s.Case.IsLocked);
+                return View(bids);
+            }
+            if (CurrentUser.RoleName.Equals("Customer") || CurrentUser.RoleName.Equals("Employee") && !rateClick)
             {
                 var bids = from b in _context.Bids
                            select b;
                 bids = bids.Where(s => s.CaseRefId.Equals(id));
                 return View(bids);
             }
-            if (CurrentUser.RoleName.Equals("Manufacturer"))
+            if (CurrentUser.RoleName.Equals("Manufacturer") && !rateClick)
+            {
+                var bids = from b in _context.Bids
+                           select b;
+                bids = bids.Where(s => s.UserRefId.Equals(CurrentUser.Id) && !s.Case.IsLocked && !s.Case.IsFinished);
+                return View(bids);
+            }
+            if (CurrentUser.RoleName.Equals("Manufacturer") && rateClick)
             {
                 var bids = from b in _context.Bids
                            select b;
                 var cases = from c in _context.Case
                             select c;
-                bids = bids.Where(s => s.UserRefId.Equals(CurrentUser.Id) && !s.Case.IsLocked && !s.Case.IsFinished);
+                bids = bids.Where(s => s.UserRefId.Equals(CurrentUser.Id) && s.Case.IsFinished && !s.RatedByMan);
                 foreach (Bids b in bids)
                 {
                     cases = cases.Where(s => s.CaseId.Equals(b.CaseRefId));
                 }
                 return View(bids);
             }
-            var applicationDbContext = _context.Bids.Include(b => b.Case);
-            return View(await applicationDbContext.ToListAsync());
+            return View();
         }
 
         // GET: Bids/Details/5
@@ -72,8 +88,9 @@ namespace ProSoLoPortal.Controllers
         }
 
         // GET: Bids/Create
-        public IActionResult Create()
+        public IActionResult Create(bool isFlexible)
         {
+            ViewBag.Flexible = isFlexible;
             ViewData["CaseRefId"] = new SelectList(_context.Case, "CaseId", "CaseId");
             return View();
         }
@@ -83,14 +100,21 @@ namespace ProSoLoPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id, [Bind("BidId,ProposedTimeFrame,BidPrice")] Bids bids)
+        public async Task<IActionResult> Create(int id, bool isFlexible, [Bind("BidId,ProposedTimeFrame,BidPrice")] Bids bids)
         {
             if (ModelState.IsValid)
             {
+                var case1 = await _context.Case.FindAsync(id);
+                if (!isFlexible) {
+                    bids.ProposedTimeFrame = case1.TimeFrame;
+                }
                 var CurrentUser = await UserManager.GetUserAsync(HttpContext.User);
                 bids.UserRefId = CurrentUser.Id;
+                var profiles = from p in _context.Profile
+                              select p;
+                profiles = profiles.Where(s => s.UserRefId.Equals(CurrentUser.Id));
+                bids.ProfileRefId = profiles.FirstOrDefault().ProfileId;
                 bids.CaseRefId = id;
-                var case1 = await _context.Case.FindAsync(id);
                 bids.CaseName = case1.Name;
                 _context.Add(bids);
                 await _context.SaveChangesAsync();

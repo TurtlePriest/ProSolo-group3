@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProSoLoPortal.Data;
 
 namespace ProSoLoPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191210101705_BidRating")]
+    partial class BidRating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,16 +242,10 @@ namespace ProSoLoPortal.Migrations
                     b.Property<int>("CaseRefId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProfileRefId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ProposedTimeFrame")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("RatedByCus")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("RatedByMan")
+                    b.Property<bool>("Rated")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserId")
@@ -292,9 +288,6 @@ namespace ProSoLoPortal.Migrations
                     b.Property<bool>("IsLocked")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ManufacturerId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -302,11 +295,11 @@ namespace ProSoLoPortal.Migrations
                     b.Property<int>("NumberOfProducts")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProfileRefId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProposedPrice")
                         .HasColumnType("int");
+
+                    b.Property<string>("Seller")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TimeFrame")
                         .IsRequired()
@@ -320,8 +313,6 @@ namespace ProSoLoPortal.Migrations
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ManufacturerId");
 
                     b.ToTable("Case");
                 });
@@ -360,8 +351,8 @@ namespace ProSoLoPortal.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserRefId")
                         .HasColumnType("nvarchar(max)");
@@ -370,27 +361,9 @@ namespace ProSoLoPortal.Migrations
 
                     b.HasIndex("EmployeeId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Profile");
-                });
-
-            modelBuilder.Entity("ProSoLoPortal.Models.Rating", b =>
-                {
-                    b.Property<int>("RatingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProfileRefId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RatingNum")
-                        .HasColumnType("int");
-
-                    b.HasKey("RatingId");
-
-                    b.HasIndex("ProfileRefId");
-
-                    b.ToTable("Rating");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -466,10 +439,6 @@ namespace ProSoLoPortal.Migrations
                     b.HasOne("ProSoLoPortal.Models.ApplicationUser", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
-
-                    b.HasOne("ProSoLoPortal.Models.ApplicationUser", "Manufacturer")
-                        .WithMany()
-                        .HasForeignKey("ManufacturerId");
                 });
 
             modelBuilder.Entity("ProSoLoPortal.Models.Profile", b =>
@@ -477,15 +446,10 @@ namespace ProSoLoPortal.Migrations
                     b.HasOne("ProSoLoPortal.Models.ApplicationUser", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
-                });
 
-            modelBuilder.Entity("ProSoLoPortal.Models.Rating", b =>
-                {
-                    b.HasOne("ProSoLoPortal.Models.Profile", "Profile")
+                    b.HasOne("ProSoLoPortal.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("ProfileRefId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

@@ -55,9 +55,4 @@
 <img width="200" height="200" src="@ViewBag.ImageData" />
 <div>
     <a asp-action="Index">Back to List</a> 
-    @if(User.IsInRole("Employee") || User.IsInRole("Admin"))
-    {
-        <a asp-action="Edit">Edit</a>
-    }
-    
 </div>

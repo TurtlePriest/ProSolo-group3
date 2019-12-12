@@ -18,5 +18,7 @@ namespace ProSoLoPortal.Data
         public DbSet<ProSoLoPortal.Models.Imagebank> Imagebank { get; set; }
         
         public DbSet<ProSoLoPortal.Models.Profile> Profile { get; set; }
+        
+        public DbSet<ProSoLoPortal.Models.Rating> Rating { get; set; }
     }
 }

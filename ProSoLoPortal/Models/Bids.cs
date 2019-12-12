@@ -30,5 +30,11 @@ namespace ProSoLoPortal.Models
 
         [Display(Name = "Proposed price")]
         public int BidPrice { get; set; }
+
+        public bool RatedByCus { get; set; }
+        public bool RatedByMan { get; set; }
+
+        [ForeignKey("Profile")]
+        public int ProfileRefId { get; set; }
     }
 }

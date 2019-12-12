@@ -3,43 +3,63 @@
 @model IEnumerable<ProSoLoPortal.Models.Case>
 
 
-    @{
+@{
     ViewData["Title"] = "Index";
-    }
+}
 
-    <h1>Index</h1>
-    @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+<h1>Index</h1>
+@if (User.IsInRole("Admin") || User.IsInRole("Employee"))
 {
     <p>
         <a asp-action="Create">Create New</a>
     </p>
 }
-    @if (User.IsInRole("Manufacturer"))
+@if (User.IsInRole("Manufacturer"))
 {
     <p>
-        <a asp-action="Index" asp-controller="bids">Show my bids</a>
-
+        <a asp-action="Index" asp-controller="case" asp-route-locked="false">Bid on new cases</a> &nbsp &nbsp &nbsp
+        <a asp-action="Index" asp-controller="case" asp-route-locked="true">Show my in progress cases</a> &nbsp &nbsp &nbsp
+        <a asp-action="Index" asp-controller="bids" asp-route-rateClick="false">Show my bids</a> &nbsp &nbsp &nbsp
+        <a asp-action="Index" asp-controller="bids" asp-route-rateClick="true">Rate finished cases</a>
     </p>
 }
 
+@if (User.IsInRole("Customer"))
+{
+    <p>
+        <a asp-action="Index" asp-controller="case" asp-route-locked="false">My open cases</a> &nbsp &nbsp &nbsp
+        <a asp-action="Index" asp-controller="case" asp-route-locked="true">Show my in progress cases</a> &nbsp &nbsp &nbsp
+        <a asp-action="Index" asp-controller="bids" asp-route-rateClick="true">Rate finished cases</a>
+    </p>
+}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TimeFrame)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NumberOfProducts)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProposedPrice)
-                </th>
+@if (User.IsInRole("Employee"))
+{
+<p>
+    <a asp-action="Index" asp-controller="case" asp-route-locked="false">Open cases</a> &nbsp &nbsp &nbsp
+    <a asp-action="Index" asp-controller="case" asp-route-locked="true">In progress cases</a> &nbsp &nbsp &nbsp
+    <a asp-action="Index" asp-controller="case" asp-route-showFinished="true">Finished cases</a>
+</p>
+}
 
-                @if (User.IsInRole("Admin") || User.IsInRole("Employee") || User.IsInRole("Customer"))
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeFrame)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfProducts)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProposedPrice)
+            </th>
+
+            @if (User.IsInRole("Admin") || User.IsInRole("Employee") || User.IsInRole("Customer"))
             {
                 <th>
                     @Html.DisplayNameFor(model => model.IsLocked)
@@ -49,14 +69,14 @@
                 </th>
             }
 
-                <th>
-                    @Html.DisplayNameFor(model => model.TimeFrameFexible)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+            <th>
+                @Html.DisplayNameFor(model => model.TimeFrameFexible)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -73,39 +93,51 @@
                 </td>
 
                 @if (User.IsInRole("Admin") || User.IsInRole("Employee") || User.IsInRole("Customer"))
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsLocked)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsFinished)
-                </td>
-            }
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsLocked)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsFinished)
+                    </td>
+                }
 
                 <td>
                     @Html.DisplayFor(modelItem => item.TimeFrameFexible)
                 </td>
                 <td>
                     @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.CaseId">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.CaseId">Delete</a>
-                }
-                    <a asp-action="Details" asp-route-id="@item.CaseId">Details</a>
+                    {
+                        if (!@item.IsLocked)
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.CaseId">Delete</a><p></p>
+                        }
+                        if (!@item.IsFinished && @item.IsLocked)
+                        {
+                            <form asp-controller="case" asp-action="Finish" asp-route-caseId="@item.CaseId">
+                                <input type="submit" value="Mark as finished" class="form-control" />
+                            </form>
+                        }
+                    }
+                    <a asp-action="Details" asp-route-id="@item.CaseId">Details</a><p></p>
 
 
 
                     @if (User.IsInRole("Admin") || User.IsInRole("Manufacturer"))
-                {
-                    <a asp-action="Create" asp-controller="bids" asp-route-id="@item.CaseId">Bid</a>
-                }
+                    {
+                        <a asp-action="Create" asp-controller="bids" asp-route-id="@item.CaseId" asp-route-isFlexible="@item.TimeFrameFexible">Bid</a><p></p>
+                        <a asp-action="Details" asp-controller="profile" asp-route-id="@item.ProfileRefId">Show customer profile</a><p></p>
+                    }
                     @if (User.IsInRole("Admin") || User.IsInRole("Employee") || User.IsInRole("Customer"))
-                {
-                    <a asp-action="Index" asp-controller="bids" asp-route-id="@item.CaseId">Bids</a>
-                }
+                    {
+                        if (!@item.IsLocked)
+                        {
+                            <a asp-action="Index" asp-controller="bids" asp-route-id="@item.CaseId">Bids</a>
+                        }
+                    }
 
                 </td>
             </tr>
         }
-        </tbody>
-    </table>
+    </tbody>
+</table>
