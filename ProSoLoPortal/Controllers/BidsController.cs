@@ -35,7 +35,7 @@ namespace ProSoLoPortal.Controllers
                 var bids = from b in _context.Bids
                            where b.RatedByCus == false
                            select b;
-                bids = bids.Where(s => s.Case.IsFinished && s.Case.IsLocked);
+                bids = bids.Where(s => s.Case.CustomerId.Equals(CurrentUser.Id) && s.Case.IsFinished && s.Case.IsLocked);
                 return View(bids);
             }
             if (CurrentUser.RoleName.Equals("Customer") || CurrentUser.RoleName.Equals("Employee") && !rateClick)

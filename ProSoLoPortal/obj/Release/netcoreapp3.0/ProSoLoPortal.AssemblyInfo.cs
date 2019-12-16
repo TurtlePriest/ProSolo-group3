@@ -11,7 +11,6 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap4")]
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("aspnet-ProSoLoPortal-0E2464E6-6232-4DDF-BF85-80B2F1BBC55F")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProSoLoPortal")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
