@@ -10,8 +10,8 @@ using ProSoLoPortal.Data;
 namespace ProSoLoPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191201102642_updatedstuff")]
-    partial class updatedstuff
+    [Migration("20191216125018_Finale2")]
+    partial class Finale2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -201,6 +201,7 @@ namespace ProSoLoPortal.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("RoleName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -236,11 +237,23 @@ namespace ProSoLoPortal.Migrations
                     b.Property<int>("BidPrice")
                         .HasColumnType("int");
 
+                    b.Property<string>("CaseName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CaseRefId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProfileRefId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProposedTimeFrame")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("RatedByCus")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("RatedByMan")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -264,11 +277,18 @@ namespace ProSoLoPortal.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CaseDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EmployeeId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte[]>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<bool>("IsFinished")
                         .HasColumnType("bit");
@@ -276,19 +296,24 @@ namespace ProSoLoPortal.Migrations
                     b.Property<bool>("IsLocked")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ManufacturerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumberOfProducts")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProfileRefId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProposedPrice")
                         .HasColumnType("int");
 
-                    b.Property<string>("Seller")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TimeFrame")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TimeFrameFexible")
@@ -300,7 +325,76 @@ namespace ProSoLoPortal.Migrations
 
                     b.HasIndex("EmployeeId");
 
+                    b.HasIndex("ManufacturerId");
+
                     b.ToTable("Case");
+                });
+
+            modelBuilder.Entity("ProSoLoPortal.Models.Imagebank", b =>
+                {
+                    b.Property<int>("PhotoID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte[]>("ImageByte")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("PhotoDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PhotoID");
+
+                    b.ToTable("Imagebank");
+                });
+
+            modelBuilder.Entity("ProSoLoPortal.Models.Profile", b =>
+                {
+                    b.Property<int>("ProfileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProfileText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserRefId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProfileId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Profile");
+                });
+
+            modelBuilder.Entity("ProSoLoPortal.Models.Rating", b =>
+                {
+                    b.Property<int>("RatingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProfileRefId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RatingNum")
+                        .HasColumnType("int");
+
+                    b.HasKey("RatingId");
+
+                    b.HasIndex("ProfileRefId");
+
+                    b.ToTable("Rating");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -376,6 +470,26 @@ namespace ProSoLoPortal.Migrations
                     b.HasOne("ProSoLoPortal.Models.ApplicationUser", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
+
+                    b.HasOne("ProSoLoPortal.Models.ApplicationUser", "Manufacturer")
+                        .WithMany()
+                        .HasForeignKey("ManufacturerId");
+                });
+
+            modelBuilder.Entity("ProSoLoPortal.Models.Profile", b =>
+                {
+                    b.HasOne("ProSoLoPortal.Models.ApplicationUser", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+                });
+
+            modelBuilder.Entity("ProSoLoPortal.Models.Rating", b =>
+                {
+                    b.HasOne("ProSoLoPortal.Models.Profile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileRefId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

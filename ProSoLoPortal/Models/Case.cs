@@ -42,6 +42,7 @@ namespace ProSoLoPortal.Models
         [Display(Name = "Time Frame Flexible")]
         public bool TimeFrameFexible { get; set; }
 
+        [Required]
         [Display(Name = "Prototype picture")]
         public byte[] ImagePath { get; set; }
 

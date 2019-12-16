@@ -10,8 +10,8 @@ using ProSoLoPortal.Data;
 namespace ProSoLoPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191211192223_fuckavf")]
-    partial class fuckavf
+    [Migration("20191216124554_Finale")]
+    partial class Finale
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -201,6 +201,7 @@ namespace ProSoLoPortal.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("RoleName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -309,9 +310,6 @@ namespace ProSoLoPortal.Migrations
 
                     b.Property<int>("ProposedPrice")
                         .HasColumnType("int");
-
-                    b.Property<string>("Seller")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TimeFrame")
                         .IsRequired()

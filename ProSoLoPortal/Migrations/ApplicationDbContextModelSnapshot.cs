@@ -199,6 +199,7 @@ namespace ProSoLoPortal.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("RoleName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -284,6 +285,7 @@ namespace ProSoLoPortal.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("ImagePath")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<bool>("IsFinished")
