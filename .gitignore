@@ -86,3 +86,4 @@ ProSoLoPortal/obj/project.assets.json
 ProSoLoPortal/obj/ProSoLoPortal.csproj.nuget.cache
 ProSoLoPortal/obj/ProSoLoPortal.csproj.nuget.dgspec.json
 ProSoLoPortal/obj/ProSoLoPortal.csproj.nuget.g.props
+*.cache
