@@ -87,62 +87,6 @@ namespace ProSoLoPortal.Data
                     await userManager.AddToRoleAsync(user, user.RoleName);
                 }
             }
-
-            // Creates a test Employee
-            if ((await userManager.FindByNameAsync("Emp@email.com")) == null)
-            {
-                ApplicationUser user = new ApplicationUser();
-                user.UserName = "Emp@email.com";
-                user.Email = "Emp@email.com";
-                user.FirstName = "Employee";
-                user.LastName = "User";
-
-
-                IdentityResult result = await userManager.CreateAsync(user, "1");
-
-                if (result.Succeeded)
-                {
-                    user.RoleName = "Employee";
-                    await userManager.AddToRoleAsync(user, user.RoleName);
-                }
-            }
-
-            // Creates a test Manufacturer
-            if ((await userManager.FindByNameAsync("Man@email.com")) == null)
-            {
-                ApplicationUser user = new ApplicationUser();
-                user.UserName = "Man@email.com";
-                user.Email = "Man@email.com";
-                user.FirstName = "Manufacturer";
-                user.LastName = "User";
-
-
-                IdentityResult result = await userManager.CreateAsync(user, "1");
-
-                if (result.Succeeded)
-                {
-                    user.RoleName = "Manufacturer";
-                    await userManager.AddToRoleAsync(user, user.RoleName);
-                }
-            }
-
-            // Creates a test Customer
-            if ((await userManager.FindByNameAsync("Cus@email.com")) == null)
-            {
-                ApplicationUser user = new ApplicationUser();
-                user.UserName = "Cus@email.com";
-                user.Email = "Cus@email.com";
-                user.FirstName = "Customer";
-                user.LastName = "User";
-
-                IdentityResult result = await userManager.CreateAsync(user, "1");
-
-                if (result.Succeeded)
-                {
-                    user.RoleName = "Customer";
-                    await userManager.AddToRoleAsync(user, user.RoleName);
-                }
-            }
         }
 
     }
